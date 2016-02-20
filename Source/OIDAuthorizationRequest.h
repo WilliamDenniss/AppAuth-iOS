@@ -132,14 +132,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)init NS_UNAVAILABLE;
 
 /*! @fn initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:
-    @brief Creates an authorization request.
+    @brief Creates an authorization request with opinionated defaults (a secure 'state', and
+        PKCE with S256 as the code_challenge_method.
     @param configuration The service's configuration.
     @param clientID The client identifier.
     @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
     @param redirectURL The client's redirect URI.
     @param responseType The expected response type.
     @param additionalParameters The client's additional authorization parameters.
-    @remarks This convenience initializer generates a state parameter automatically.
+    @remarks This convenience initializer generates a state parameter and PKCE challenges
+        automatically.
  */
 - (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID
@@ -157,7 +159,11 @@ NS_ASSUME_NONNULL_BEGIN
     @param responseType The expected response type.
     @param state An opaque value used by the client to maintain state between the request and
         callback.
-    @param codeVerifier The PKCE code verifier.
+    @param codeVerifier The PKCE code verifier. See @c OIDServiceConfiguration.generateCodeVerifier
+    @param codeChallenge The PKCE code challenge. See
+        @c OIDServiceConfiguration.S256CodeChallengeForVerifier.
+    @param codeChallengeMethod The PKCE code challenge method. If you use
+        @c OIDServiceConfiguration.S256CodeChallengeForVerifier, this should be "S256".
     @param additionalParameters The client's additional authorization parameters.
  */
 - (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
@@ -167,6 +173,8 @@ NS_ASSUME_NONNULL_BEGIN
             responseType:(NSString *)responseType
                    state:(nullable NSString *)state
             codeVerifier:(nullable NSString *)codeVerifier
+           codeChallenge:(nullable NSString *)codeChallenge
+     codeChallengeMethod:(nullable NSString *)codeChallengeMethod
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
@@ -183,14 +191,22 @@ NS_ASSUME_NONNULL_BEGIN
     @return The generated state.
     @see https://tools.ietf.org/html/rfc6819#section-5.3.5
  */
-+ (NSString *)generateState;
++ (nullable NSString *)generateState;
 
 /*! @fn generateCodeVerifier
     @brief Constructs a PKCE-compliant code verifier.
     @return The generated code verifier.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
-+ (NSString *)generateCodeVerifier;
++ (nullable NSString *)generateCodeVerifier;
+
+/*! @fn S256CodeChallengeForVerifier
+    @brief Creates a PKCE S256 codeChallenge from the codeVerifier.
+    @param codeVerifier The code verifier from which the code challenge will be derived.
+    @return The generated code challenge.
+    @see https://tools.ietf.org/html/rfc7636#section-4.1
+ */
++ (nullable NSString *)S256CodeChallengeForVerifier:(nullable NSString *)codeVerifier;
 
 @end
 

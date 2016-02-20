@@ -73,6 +73,11 @@ static NSString *const kTestState = @"State";
  */
 static NSString *const kTestCodeVerifier = @"code verifier";
 
+/*! @var kTestCodeChallengeMethod
+    @brief Test value for the @c codeChallengeMethod property.
+ */
+static NSString *const kTestCodeChallengeMethod = @"S256";
+
 /*! @var kTestInvalidScope1
     @brief This test scope contains a character which is one character below the allowed character
         range.
@@ -141,6 +146,10 @@ static int const kCodeVerifierRecommendedLength = 43;
 
 @implementation OIDAuthorizationRequestTests
 
++ (NSString *) testCodeChallenge {
+  return [OIDAuthorizationRequest S256CodeChallengeForVerifier:kTestCodeVerifier];
+}
+
 + (OIDAuthorizationRequest *)testInstance {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
@@ -153,6 +162,8 @@ static int const kCodeVerifierRecommendedLength = 43;
                   responseType:kTestResponseType
                          state:kTestState
                   codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] testCodeChallenge]
+           codeChallengeMethod:kTestCodeChallengeMethod
           additionalParameters:additionalParameters];
   return request;
 }
@@ -167,6 +178,8 @@ static int const kCodeVerifierRecommendedLength = 43;
                   responseType:OIDResponseTypeCode
                          state:kTestState
                   codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] testCodeChallenge]
+           codeChallengeMethod:kTestCodeChallengeMethod
           additionalParameters:nil];
   return request;
 }
@@ -207,6 +220,8 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(request.state, kTestState);
   XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
+  XCTAssertEqualObjects(request.codeChallenge, [[self class] testCodeChallenge]);
+  XCTAssertEqualObjects(request.codeChallengeMethod, kTestCodeChallengeMethod);
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
 
@@ -220,6 +235,8 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(requestCopy.redirectURL, request.redirectURL);
   XCTAssertEqualObjects(requestCopy.state, request.state);
   XCTAssertEqualObjects(requestCopy.codeVerifier, request.codeVerifier);
+  XCTAssertEqualObjects(requestCopy.codeChallenge, request.codeChallenge);
+  XCTAssertEqualObjects(requestCopy.codeChallengeMethod, request.codeChallengeMethod);
   XCTAssertEqualObjects(requestCopy.additionalParameters,
                         request.additionalParameters);
 }
@@ -237,6 +254,8 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(request.state, kTestState);
   XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
+  XCTAssertEqualObjects(request.codeChallenge, [[self class] testCodeChallenge]);
+  XCTAssertEqualObjects(request.codeChallengeMethod, kTestCodeChallengeMethod);
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
 
@@ -257,6 +276,8 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(requestCopy.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(requestCopy.state, kTestState);
   XCTAssertEqualObjects(requestCopy.codeVerifier, kTestCodeVerifier);
+  XCTAssertEqualObjects(requestCopy.codeChallenge, [[self class] testCodeChallenge]);
+  XCTAssertEqualObjects(requestCopy.codeChallengeMethod, kTestCodeChallengeMethod);
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
 }

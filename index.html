@@ -28,7 +28,12 @@
         </ul>
       </header>
       <section>
-        <p>AppAuth for iOS is a client SDK for communicating with <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0</a> and <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a> providers. It strives to
+        <h1>
+<a id="appauth-for-ios" class="anchor" href="#appauth-for-ios" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AppAuth for iOS</h1>
+
+<p><a href="https://www.bitrise.io/app/8e4dbca635a964dc"><img src="https://www.bitrise.io/app/8e4dbca635a964dc.svg?token=8rT4oJnhjUuFWH-QvXuJzg&amp;branch=master" alt="Build Status"></a></p>
+
+<p>AppAuth for iOS is a client SDK for communicating with <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0</a> and <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a> providers. It strives to
 directly map the requests and responses of those specifications, while following
 the idiomatic style of the implementation language. In addition to mapping the
 raw protocol flows, convenience methods are available to assist with common
@@ -146,7 +151,8 @@ OIDServiceConfiguration *configuration =
 order to continue the authorization flow from the redirect.</p>
 
 <div class="highlight highlight-source-objc"><pre><span class="pl-c">// property of the app's AppDelegate</span>
-@property(nonatomic, strong, nullable) <span class="pl-k">id</span>&lt;OIDAuthorizationFlowSession&gt; currentAuthorizationFlow;</pre></div>
+@property(nonatomic, strong, nullable)
+    <span class="pl-k">id</span>&lt;OIDAuthorizationFlowSession&gt; currentAuthorizationFlow;</pre></div>
 
 <p>And your main class, a property to store the auth state:</p>
 
@@ -164,7 +170,8 @@ app for a demonstration.</p>
 OIDAuthorizationRequest *request =
     [[OIDAuthorizationRequest <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithConfiguration:</span>configuration
                                                   <span class="pl-c1">clientId:</span><span class="pl-c1">kClientID</span>
-                                                    <span class="pl-c1">scopes:</span>@[OIDScopeOpenID, OIDScopeProfile]
+                                                    <span class="pl-c1">scopes:</span>@[OIDScopeOpenID,
+                                                             <span class="pl-c1">OIDScopeProfile</span>]
                                                <span class="pl-c1">redirectURL:</span>KRedirectURI
                                               <span class="pl-c1">responseType:</span>OIDResponseTypeCode
                                       <span class="pl-c1">additionalParameters:</span><span class="pl-c1">nil</span>];

@@ -3,10 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>AppAuth for iOS by openid</title>
+    <title>AppAuth for iOS by WilliamDenniss</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/styles-override.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
@@ -19,13 +18,13 @@
         <h1>AppAuth for iOS</h1>
         <p></p>
 
-        <p class="view"><a href="https://github.com/openid/AppAuth-iOS">View the Project on GitHub <small>openid/AppAuth-iOS</small></a></p>
+        <p class="view"><a href="https://github.com/WilliamDenniss/AppAuth-iOS">View the Project on GitHub <small>WilliamDenniss/AppAuth-iOS</small></a></p>
 
 
         <ul>
-          <li><a href="https://github.com/openid/AppAuth-iOS/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/openid/AppAuth-iOS/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/openid/AppAuth-iOS">View On <strong>GitHub</strong></a></li>
+          <li><a href="https://github.com/WilliamDenniss/AppAuth-iOS/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/WilliamDenniss/AppAuth-iOS/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/WilliamDenniss/AppAuth-iOS">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
@@ -111,22 +110,29 @@ authorization state of the session.</p>
 
 <p>You can configure AppAuth by specifying the endpoints directly:</p>
 
-<div class="highlight highlight-source-objc"><pre><span class="pl-c1">NSURL</span> *authorizationEndpoint = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://accounts.google.com/o/oauth2/v2/auth<span class="pl-pds">"</span></span>];
-<span class="pl-c1">NSURL</span> *tokenEndpoint = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://www.googleapis.com/oauth2/v4/token<span class="pl-pds">"</span></span>];
+<div class="highlight highlight-source-objc"><pre><span class="pl-c1">NSURL</span> *authorizationEndpoint =
+    [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://accounts.google.com/o/oauth2/v2/auth<span class="pl-pds">"</span></span>];
+<span class="pl-c1">NSURL</span> *tokenEndpoint =
+    [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://www.googleapis.com/oauth2/v4/token<span class="pl-pds">"</span></span>];
+
 OIDServiceConfiguration *configuration =
-    [[OIDServiceConfiguration <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithAuthorizationEndpoint:</span>authorizationEndpoint
-                                                     <span class="pl-c1">tokenEndpoint:</span>tokenEndpoint];
+    [[OIDServiceConfiguration <span class="pl-c1">alloc</span>]
+        <span class="pl-c1">initWithAuthorizationEndpoint:</span>authorizationEndpoint
+                        <span class="pl-c1">tokenEndpoint:</span>tokenEndpoint];
 
 <span class="pl-c">// perform the auth request...</span></pre></div>
 
 <p>Or through discovery:</p>
 
 <div class="highlight highlight-source-objc"><pre><span class="pl-c1">NSURL</span> *issuer = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://accounts.google.com<span class="pl-pds">"</span></span>];
+
 [OIDAuthorizationService <span class="pl-c1">discoverServiceConfigurationForIssuer:</span>issuer
-    <span class="pl-c1">completion:</span>^(OIDServiceConfiguration *_Nullable configuration, <span class="pl-c1">NSError</span> *_Nullable error) {
+    <span class="pl-c1">completion:</span>^(OIDServiceConfiguration *_Nullable configuration,
+                 <span class="pl-c1">NSError</span> *_Nullable error) {
 
   <span class="pl-k">if</span> (!configuration) {
-    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Error retrieving discovery document: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Error retrieving discovery document: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,
+          [error <span class="pl-c1">localizedDescription</span>]);
     <span class="pl-k">return</span>;
   }
 
@@ -136,8 +142,8 @@ OIDServiceConfiguration *configuration =
 <h3>
 <a id="authorizing" class="anchor" href="#authorizing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing</h3>
 
-<p>First you need to have a property in your AppDelegate to hold the session, in order to continue the
-authorization flow from the redirect.</p>
+<p>First you need to have a property in your AppDelegate to hold the session, in
+order to continue the authorization flow from the redirect.</p>
 
 <div class="highlight highlight-source-objc"><pre><span class="pl-c">// property of the app's AppDelegate</span>
 @property(nonatomic, strong, nullable) <span class="pl-k">id</span>&lt;OIDAuthorizationFlowSession&gt; currentAuthorizationFlow;</pre></div>
@@ -147,10 +153,12 @@ authorization flow from the redirect.</p>
 <div class="highlight highlight-source-objc"><pre><span class="pl-c">// property of the containing class</span>
 @property(nonatomic, strong, nullable) OIDAuthState *authState;</pre></div>
 
-<p>Then, initiate the authorization request. By using the <code>authStateByPresentingAuthorizationRequest</code>
-convenience method, the token exchange will be performed automatically, and everything will be
-protected with PKCE (if the server supports it). AppAuth also allows you to perform these
-requests manually. See the <code>authNoCodeExchange</code> method in the included Example app for a demonstration.</p>
+<p>Then, initiate the authorization request. By using the 
+<code>authStateByPresentingAuthorizationRequest</code> convenience method, the token
+exchange will be performed automatically, and everything will be protected with
+PKCE (if the server supports it). AppAuth also allows you to perform these
+requests manually. See the <code>authNoCodeExchange</code> method in the included Example
+app for a demonstration.</p>
 
 <div class="highlight highlight-source-objc"><pre><span class="pl-c">// builds authentication request</span>
 OIDAuthorizationRequest *request =
@@ -162,9 +170,8 @@ OIDAuthorizationRequest *request =
                                       <span class="pl-c1">additionalParameters:</span><span class="pl-c1">nil</span>];
 
 <span class="pl-c">// performs authentication request</span>
-AppDelegate *appDelegate = (AppDelegate *)[UIApplication <span class="pl-c1">sharedApplication</span>].delegate;
-<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Initiating authorization request with scope: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, request.scope);
-
+AppDelegate *appDelegate =
+    (AppDelegate *)[UIApplication <span class="pl-c1">sharedApplication</span>].delegate;
 appDelegate.currentAuthorizationFlow =
     [OIDAuthState <span class="pl-c1">authStateByPresentingAuthorizationRequest:</span>request
         <span class="pl-c1">presentingViewController:</span><span class="pl-v">self</span>
@@ -240,7 +247,7 @@ workspace to a Pod workspace by deleting the <code>AppAuth</code> project, and
 to configure your own OAuth client ID for use with the example.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/openid">openid</a></p>
+        <p>This project is maintained by <a href="https://github.com/WilliamDenniss">WilliamDenniss</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>

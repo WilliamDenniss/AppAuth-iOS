@@ -18,8 +18,8 @@
 
 #import "OIDRedirectHTTPHandler.h"
 
-#import "HTTPServer.h"
 #import "OIDAuthorizationService.h"
+#import "OIDLoopbackHTTPServer.h"
 
 @implementation OIDRedirectHTTPHandler {
   HTTPServer *httpServ;

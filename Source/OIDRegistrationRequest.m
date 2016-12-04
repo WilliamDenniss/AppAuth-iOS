@@ -58,7 +58,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                           responseTypes:
                              grantTypes:
                             subjectType:
-      tokenEndpointAuthenticationMethod:
+                tokenEndpointAuthMethod:
                    additionalParameters:)
     );
 

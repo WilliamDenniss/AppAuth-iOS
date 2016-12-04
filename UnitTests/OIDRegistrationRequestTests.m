@@ -65,7 +65,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
                               responseTypes:@[ kResponseTypeTestValue ]
                                  grantTypes:@[ kGrantTypeTestValue ]
                                 subjectType:kSubjectTypeTestValue
-          tokenEndpointAuthenticationMethod:kTokenEndpointAuthMethodTestValue
+                    tokenEndpointAuthMethod:kTokenEndpointAuthMethodTestValue
                        additionalParameters:additionalParameters];
 
   return request;

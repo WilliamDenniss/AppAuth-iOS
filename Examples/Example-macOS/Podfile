@@ -1,3 +1,5 @@
+project 'Example-macOS_CocoaPods.xcodeproj'
+
 target 'Example-macOS' do
   platform :osx, '10.10'
 

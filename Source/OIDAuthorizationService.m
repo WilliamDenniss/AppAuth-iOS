@@ -23,6 +23,7 @@
 #import "OIDAuthorizationUICoordinator.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
+#import "OIDIDToken.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDServiceConfiguration.h"
@@ -345,6 +346,69 @@ NS_ASSUME_NONNULL_BEGIN
         callback(nil, returnedError);
       });
       return;
+    }
+
+    // Validates ID Token if it exists
+    if (tokenResponse.idToken) {
+      OIDIDToken *idToken = [[OIDIDToken alloc] initWithIDTokenString:tokenResponse.idToken];
+      if (!idToken) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenParsingError
+                           underlyingError:nil
+                               description:@"ID Token parsing failed"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+
+      NSURL *issuer = tokenResponse.request.configuration.issuer;
+      if (![idToken.issuer isEqual:issuer]) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Issuer mismatch"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+
+      NSString *clientID = tokenResponse.request.clientID;
+      if (![idToken.audience containsObject:clientID]) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Audience mismatch"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+
+      NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
+      if (issuedAtDifference > 300) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Issued at time is too far in the future"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+
+      NSTimeInterval expiresAtDifference = [idToken.expiresAt timeIntervalSinceNow];
+      if (expiresAtDifference < -60) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"ID Token expired"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
     }
 
     // Success

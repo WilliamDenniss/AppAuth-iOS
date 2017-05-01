@@ -30,7 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface OIDRPProfileCode : XCTestCase {
+  // private variables
   OIDAuthorizationUICoordinatorNonInteractive *_coordinator;
+  FILE * _logFile;
 }
 
 @end

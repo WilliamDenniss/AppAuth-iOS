@@ -261,6 +261,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Token Endpoint
 
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
+  return [[self class] performTokenRequest:request
+             originalAuthorizationResponse:nil
+                                  callback:callback];
+}
+
++ (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback {
+
   NSURLRequest *URLRequest = [request URLRequest];
   NSURLSession *session = [NSURLSession sharedSession];
   [[session dataTaskWithRequest:URLRequest
@@ -386,6 +395,18 @@ NS_ASSUME_NONNULL_BEGIN
         return;
       }
 
+      NSString *nonce = authorizationResponse.request.nonce;
+      if (nonce && ![idToken.nonce isEqual:nonce]) {
+        NSError *invalidIDToken =
+        [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                         underlyingError:nil
+                             description:@"Nonce mismatch"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+      
       NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
       if (issuedAtDifference > 300) {
         NSError *invalidIDToken =

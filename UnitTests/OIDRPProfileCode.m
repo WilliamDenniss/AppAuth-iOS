@@ -131,7 +131,10 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
                                                    grantTypes:nil
                                                   subjectType:nil
                                       tokenEndpointAuthMethod:@"client_secret_basic"
-                                         additionalParameters:nil];
+                                         additionalParameters:@{@"id_token_signed_response_alg": @"none"}];
+
+    [self certificationLog:@"Registration request: %@", request];
+
     // performs registration request
     [OIDAuthorizationService performRegistrationRequest:request
         completion:^(OIDRegistrationResponse *_Nullable regResp, NSError *_Nullable error) {
@@ -160,20 +163,18 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
 - (void)codeFlowWithExchangeForTest:(NSString *)test
                               scope:(NSArray<NSString *> *)scope
                          completion:(CodeExchangeCompletion)completion {
-  
-  [kTestURIBase stringByAppendingString:test];
-  
+
   NSString *issuerString = [kTestURIBase stringByAppendingString:test];
-  
+
   XCTestExpectation *expectation =
   [self expectationWithDescription:@"Discovery and registration should complete."];
   XCTestExpectation *auth_complete =
   [self expectationWithDescription:@"Authorization should complete."];
   XCTestExpectation *token_exchange =
   [self expectationWithDescription:@"Token Exchange should complete."];
-  
+
   NSURL *issuer = [NSURL URLWithString:issuerString];
-  
+
   [self doRegistrationWithIssuer:issuer callback:^(OIDServiceConfiguration *configuration,
                                                    OIDRegistrationResponse *registrationResponse,
                                                    NSError *error) {
@@ -181,7 +182,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
     XCTAssertNotNil(configuration);
     XCTAssertNotNil(registrationResponse);
     XCTAssertNil(error);
-    
+
     NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
     // builds authentication request
     OIDAuthorizationRequest *request =
@@ -192,12 +193,12 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
                                                redirectURL:redirectURI
                                               responseType:OIDResponseTypeCode
                                       additionalParameters:nil];
-    
+
     _coordinator = [[OIDAuthorizationUICoordinatorNonInteractive alloc] init];
-    
+
     [self certificationLog:@"Initiating authorization request: %@",
      [request authorizationRequestURL]];
-    
+
     [OIDAuthorizationService
      presentAuthorizationRequest:request
      UICoordinator:_coordinator
@@ -206,20 +207,20 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
        [auth_complete fulfill];
        XCTAssertNotNil(authorizationResponse);
        XCTAssertNil(error);
-       
+
        OIDTokenRequest *tokenExchangeRequest = [authorizationResponse tokenExchangeRequest];
        [OIDAuthorizationService
         performTokenRequest:tokenExchangeRequest
         originalAuthorizationResponse:authorizationResponse
         callback:^(OIDTokenResponse *_Nullable tokenResponse,
                    NSError *_Nullable tokenError) {
-          
+
           [token_exchange fulfill];
-          
+
           completion(authorizationResponse, tokenResponse, tokenError);
         }];
      }];
-    
+
   }];
   [self waitForExpectationsWithTimeout:30 handler:nil];
 }
@@ -440,6 +441,52 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
     }
   }];
 }
+
+- (void)testRP_id_token_kid_absent_single_jwks {
+  NSString *testName = @"rp-id_token-kid-absent-single-jwks";
+  [self skippedTest:testName];
+}
+- (void)testRP_id_token_kid_absent_multiple_jwks {
+  NSString *testName = @"rp-id_token-kid-absent-multiple-jwks";
+  [self skippedTest:testName];
+}
+- (void)testRP_rp_id_token_bad_sig_rs256 {
+  NSString *testName = @"rp-id_token-bad-sig-rs256";
+  [self skippedTest:testName];
+}
+
+- (void)testRP_id_token_sig_rs256 {
+  NSString *testName = @"rp-id_token-sig-rs256";
+  [self skippedTest:testName];
+}
+
+- (void)skippedTest:(NSString *)testName {
+  [self startCertificationTest:testName];
+
+  NSString *issuerString = [kTestURIBase stringByAppendingString:testName];
+
+  XCTestExpectation *expectation =
+    [self expectationWithDescription:@"Discovery and registration should complete."];
+
+  NSURL *issuer = [NSURL URLWithString:issuerString];
+
+  [self doRegistrationWithIssuer:issuer callback:^(OIDServiceConfiguration *configuration,
+                                                   OIDRegistrationResponse *registrationResponse,
+                                                   NSError *error) {
+    [expectation fulfill];
+
+    XCTAssertNil(registrationResponse);
+    XCTAssertNotNil(error);
+
+    if (error) {
+      [self certificationLog:@"Registration error: %@", error];
+      [self certificationLog:@"SKIP. With id_token_signed_response_alg set to `none` in registration, error recieved and test skipped."];
+    }
+
+  }];
+  [self waitForExpectationsWithTimeout:30 handler:nil];
+}
+
 
 /*! @brief Creates a log file to record the certification logs.
     @param testName The test ID used to configure the test server.

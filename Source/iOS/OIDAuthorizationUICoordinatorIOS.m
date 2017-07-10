@@ -46,7 +46,9 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL _authorizationFlowInProgress;
   __weak id<OIDAuthorizationFlowSession> _session;
   __weak SFSafariViewController *_safariVC;
-   SFAuthenticationSession *_authenticationVC;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+  SFAuthenticationSession *_authenticationVC;
+#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
 }
 
 /** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
@@ -83,7 +85,8 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   _session = session;
   BOOL openedSafari = NO;
   NSURL *requestURL = [request authorizationRequestURL];
-  
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
   if (@available(iOS 11.0, *)) {
     NSString *redirectScheme = request.redirectURL.scheme;
     SFAuthenticationSession* authenticationVC =
@@ -95,7 +98,9 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     }];
     _authenticationVC = authenticationVC;
     openedSafari = [authenticationVC start];
-  } else {
+  } else
+#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+  {
     if ([SFSafariViewController class]) {
       SFSafariViewController *safariVC =
       [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
@@ -106,7 +111,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     }
     openedSafari = [[UIApplication sharedApplication] openURL:requestURL];
   }
-  
+
   if (!openedSafari) {
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError

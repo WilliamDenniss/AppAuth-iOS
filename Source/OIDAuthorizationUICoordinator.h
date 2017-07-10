@@ -20,6 +20,8 @@
 
 @protocol OIDAuthorizationFlowSession;
 
+@class OIDAuthorizationRequest;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @protocol OIDAuthorizationUICoordinator
@@ -30,14 +32,14 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol OIDAuthorizationUICoordinator<NSObject>
 
 /*! @brief Presents the authorization UI for the given URL.
-    @param URL The URL that should be used when presenting the authorization UI.
+    @param request The request that should be used when presenting the authorization UI.
     @param session The @c OIDAuthorizationFlowSession instance that initiates presenting the
         authorization UI. Concrete implementations of a @c OIDAuthorizationUICoordinator may call
         resumeAuthorizationFlowWithURL or failAuthorizationFlowWithError on session to either
         resume or fail the authorization.
     @return YES If the authorization UI was successfully presented to the user.
  */
-- (BOOL)presentAuthorizationWithURL:(NSURL *)URL session:(id<OIDAuthorizationFlowSession>)session;
+- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request session:(id<OIDAuthorizationFlowSession>)session;
 
 /*! @brief Dimisses the authorization UI and calls completion when the dismiss operation ends.
     @param animated Wheter or not the dismiss operation should be animated.

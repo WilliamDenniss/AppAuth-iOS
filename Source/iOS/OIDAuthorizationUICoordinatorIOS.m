@@ -94,7 +94,16 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
                                    callbackURLScheme:redirectScheme
                                    completionHandler:^(NSURL * _Nullable callbackURL,
                                                        NSError * _Nullable error) {
-      [_session resumeAuthorizationFlowWithURL:callbackURL];
+      _authenticationVC = nil;
+      if (callbackURL) {
+        [_session resumeAuthorizationFlowWithURL:callbackURL];
+      } else {
+        NSError *safariError =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                             underlyingError:error
+                                 description:nil];
+        [_session failAuthorizationFlowWithError:safariError];
+      }
     }];
     _authenticationVC = authenticationVC;
     openedSafari = [authenticationVC start];

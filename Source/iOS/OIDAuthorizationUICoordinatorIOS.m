@@ -75,7 +75,8 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   return self;
 }
 
-- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request session:(id<OIDAuthorizationFlowSession>)session {
+- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                            session:(id<OIDAuthorizationFlowSession>)session {
   if (_authorizationFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;

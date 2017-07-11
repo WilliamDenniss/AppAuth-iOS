@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDAuthorizationUICoordinatorMac
 
-- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request session:(id<OIDAuthorizationFlowSession>)session {
+- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                            session:(id<OIDAuthorizationFlowSession>)session {
   if (_authorizationFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;

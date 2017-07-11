@@ -1,0 +1,16 @@
+PODS:
+  - AppAuth (0.9.1)
+
+DEPENDENCIES:
+  - AppAuth (from `../../`)
+
+EXTERNAL SOURCES:
+  AppAuth:
+    :path: ../../
+
+SPEC CHECKSUMS:
+  AppAuth: f7d9a2ce4ffe79a62a8b0c1d0938e88d9809b846
+
+PODFILE CHECKSUM: abe079692b9a7fd43182b3039b95489b56d257e1
+
+COCOAPODS: 1.2.1

@@ -28,20 +28,20 @@ typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://issuer.example.com";
+static NSString *const kIssuer = @"https://accounts.google.com";
 
 /*! @brief The OAuth client ID.
     @discussion For client configuration instructions, see the README.
         Set to nil to use dynamic registration with this example.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kClientID = @"YOUR_CLIENT_ID";
+static NSString *const kClientID = @"581786658708-6p376uvvj9v1nndcljh2a0o0apss8n5c.apps.googleusercontent.com";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
+static NSString *const kRedirectURI = @"com.googleusercontent.apps.581786658708-6p376uvvj9v1nndcljh2a0o0apss8n5c:/oauth2redirect/example-provider";
 
 /*! @brief NSCoding key for the authState property.
  */
@@ -66,38 +66,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (void)verifyConfig {
-#if !defined(NS_BLOCK_ASSERTIONS)
 
-  // The example needs to be configured with your own client details.
-  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
 
-  NSAssert(![kIssuer isEqualToString:@"https://issuer.example.com"],
-           @"Update kIssuer with your own issuer. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
-
-  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
-           @"Update kClientID with your own client ID. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
-
-  NSAssert(![kRedirectURI isEqualToString:@"com.example.app:/oauth2redirect/example-provider"],
-           @"Update kRedirectURI with your own redirect URI. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
-
-  // verifies that the custom URI scheme has been updated in the Info.plist
-  NSArray __unused* urlTypes =
-      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
-  NSAssert([urlTypes count] > 0, @"No custom URI scheme has been configured for the project.");
-  NSArray *urlSchemes =
-      [(NSDictionary *)[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
-  NSAssert([urlSchemes count] > 0, @"No custom URI scheme has been configured for the project.");
-  NSString *urlScheme = [urlSchemes objectAtIndex:0];
-
-  NSAssert(![urlScheme isEqualToString:@"com.example.app"],
-           @"Configure the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0) "
-            "with the scheme of your redirect URI. Full instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
-
-#endif // !defined(NS_BLOCK_ASSERTIONS)
 }
 
 /*! @brief Saves the @c OIDAuthState to @c NSUSerDefaults.

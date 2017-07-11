@@ -39,7 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
         resume or fail the authorization.
     @return YES If the authorization UI was successfully presented to the user.
  */
-- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request session:(id<OIDAuthorizationFlowSession>)session;
+- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                            session:(id<OIDAuthorizationFlowSession>)session;
 
 /*! @brief Dimisses the authorization UI and calls completion when the dismiss operation ends.
     @param animated Wheter or not the dismiss operation should be animated.

@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol OIDAuthorizationUICoordinator<NSObject>
 
-/*! @brief Presents the authorization UI for the given URL.
-    @param request The request that should be used when presenting the authorization UI.
+/*! @brief Presents the authroization request in the user-agent.
+    @param request The authorizatoin request to be presented in the user-agent.
     @param session The @c OIDAuthorizationFlowSession instance that initiates presenting the
         authorization UI. Concrete implementations of a @c OIDAuthorizationUICoordinator may call
         resumeAuthorizationFlowWithURL or failAuthorizationFlowWithError on session to either

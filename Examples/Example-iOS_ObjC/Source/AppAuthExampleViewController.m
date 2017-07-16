@@ -28,21 +28,21 @@ typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://issuer.example.com";
+static NSString *const kIssuer = @"https://login.microsoftonline.com/common/2.0/";
 
 /*! @brief The OAuth client ID.
     @discussion For client configuration instructions, see the README.
         Set to nil to use dynamic registration with this example.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kClientID = @"YOUR_CLIENT_ID";
+static NSString *const kClientID = @"e231ab85-2b12-43f8-946a-a4d5144a492d";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
-
+//static NSString *const kRedirectURI = @"msale231ab85-2b12-43f8-946a-a4d5144a492d://auth";
+static NSString *const kRedirectURI = @"msale231ab85-2b12-43f8-946a-a4d5144a492d://auth";
 /*! @brief NSCoding key for the authState property.
  */
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
@@ -200,11 +200,14 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                       clientSecret:(NSString *)clientSecret {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
   // builds authentication request
+  NSArray<NSString *> *scopes = @[OIDScopeOpenID,
+                                  OIDScopeProfile,
+                                   @"https://outlook.office.com/mail.read"];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:clientID
                                                 clientSecret:clientSecret
-                                                      scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
+                                                      scopes:scopes
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil];
@@ -237,7 +240,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:clientID
                                                 clientSecret:clientSecret
-                                                      scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
+                                                      scopes:@[ OIDScopeOpenID, OIDScopeProfile,
+                                                                @"https://outlook.office.com/mail.read" ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil];
@@ -270,16 +274,15 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   [self logMessage:@"Fetching configuration for issuer: %@", issuer];
 
-  // discovers endpoints
-  [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
-    if (!configuration) {
-      [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
-      [self setAuthState:nil];
-      return;
-    }
+  NSURL *authorizationEndpoint =
+      [NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2/v2.0/authorize"];
+  NSURL *tokenEndpoint =
+      [NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2/v2.0/token"];
+  OIDServiceConfiguration* configuration =
+      [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
+  
+  [self logMessage:@"Got configuration: %@", configuration];
 
-    [self logMessage:@"Got configuration: %@", configuration];
 
     if (!kClientID) {
       [self doClientRegistration:configuration
@@ -292,8 +295,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     } else {
       [self doAuthWithAutoCodeExchange:configuration clientID:kClientID clientSecret:nil];
     }
-   }];
-}
+    }
 
 - (IBAction)authNoCodeExchange:(nullable id)sender {
   [self verifyConfig];
@@ -302,15 +304,10 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   [self logMessage:@"Fetching configuration for issuer: %@", issuer];
 
-  // discovers endpoints
-  [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+  OIDServiceConfiguration* configuration =
+  [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:[NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2/v2.0/authorize"] tokenEndpoint:[NSURL URLWithString:@"https://login.microsoftonline.com/common/oauth2/v2.0/token"]];
 
-    if (!configuration) {
-      [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
-      return;
-    }
-
+  
     [self logMessage:@"Got configuration: %@", configuration];
 
     if (!kClientID) {
@@ -324,7 +321,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     } else {
       [self doAuthWithoutCodeExchange:configuration clientID:kClientID clientSecret:nil];
     }
-  }];
 }
 
 - (IBAction)codeExchange:(nullable id)sender {

@@ -47,7 +47,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   __weak id<OIDAuthorizationFlowSession> _session;
   __weak SFSafariViewController *_safariVC;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-  SFAuthenticationSession *_authenticationVC;
+  id _authenticationVC;
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
 }
 

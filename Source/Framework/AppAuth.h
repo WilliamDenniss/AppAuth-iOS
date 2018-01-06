@@ -31,8 +31,11 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDAuthorizationResponse.h>
 #import <AppAuth/OIDAuthorizationService.h>
 #import <AppAuth/OIDAuthorizationUICoordinator.h>
+#import <AppAuth/OIDClientMetadataParameters.h>
+#import <AppAuth/OIDDefines.h>
 #import <AppAuth/OIDError.h>
 #import <AppAuth/OIDErrorUtilities.h>
+#import <AppAuth/OIDFieldMapping.h>
 #import <AppAuth/OIDGrantTypes.h>
 #import <AppAuth/OIDIDToken.h>
 #import <AppAuth/OIDRegistrationRequest.h>
@@ -45,6 +48,8 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDTokenRequest.h>
 #import <AppAuth/OIDTokenResponse.h>
 #import <AppAuth/OIDTokenUtilities.h>
+#import <AppAuth/OIDURLQueryComponent.h>
+#import <AppAuth/OIDURLSessionProvider.h>
 
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH

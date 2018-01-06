@@ -23,8 +23,11 @@
 #import "OIDAuthorizationResponse.h"
 #import "OIDAuthorizationService.h"
 #import "OIDAuthorizationUICoordinator.h"
+#import "OIDClientMetadataParameters.h"
+#import "OIDDefines.h"
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
+#import "OIDFieldMapping.h"
 #import "OIDGrantTypes.h"
 #import "OIDIDToken.h"
 #import "OIDRegistrationRequest.h"
@@ -37,6 +40,7 @@
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
 #import "OIDTokenUtilities.h"
+#import "OIDURLQueryComponent.h"
 #import "OIDURLSessionProvider.h"
 
 #if TARGET_OS_TV

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-               BuildableName = "AppAUth.framework"
+               BuildableName = "AppAuth.framework"
                BlueprintName = "AppAuth_tvOS"
                ReferencedContainer = "container:AppAuth.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-            BuildableName = "AppAUth.framework"
+            BuildableName = "AppAuth.framework"
             BlueprintName = "AppAuth_tvOS"
             ReferencedContainer = "container:AppAuth.xcodeproj">
          </BuildableReference>
@@ -67,7 +67,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-            BuildableName = "AppAUth.framework"
+            BuildableName = "AppAuth.framework"
             BlueprintName = "AppAuth_tvOS"
             ReferencedContainer = "container:AppAuth.xcodeproj">
          </BuildableReference>
@@ -85,7 +85,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-            BuildableName = "AppAUth.framework"
+            BuildableName = "AppAuth.framework"
             BlueprintName = "AppAuth_tvOS"
             ReferencedContainer = "container:AppAuth.xcodeproj">
          </BuildableReference>

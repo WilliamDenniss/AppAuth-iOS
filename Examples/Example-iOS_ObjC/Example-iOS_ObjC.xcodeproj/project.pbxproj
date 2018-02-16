@@ -13,6 +13,7 @@
 		346E91791C29D42800D3620B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 346E91781C29D42800D3620B /* Assets.xcassets */; };
 		346E917C1C29D42800D3620B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 346E917A1C29D42800D3620B /* LaunchScreen.storyboard */; };
 		346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346E91981C2A245000D3620B /* SafariServices.framework */; };
+		34893FCF20351ED100530CAF /* AppAuth_logo_circle_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 34893FCE20351ED100530CAF /* AppAuth_logo_circle_256.png */; };
 		34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */; };
 		34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */; };
 		E46F8589CE9E5DDFA69D835B /* libPods-Example-iOS_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B61A918CBE7B8142CD7D8B3 /* libPods-Example-iOS_ObjC.a */; };
@@ -43,6 +44,7 @@
 		346E917D1C29D42800D3620B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		346E91981C2A245000D3620B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		3474C8DD1DFCB08E00F22B34 /* libAppAuth-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libAppAuth-iOS.a"; path = "../../build/Debug-iphoneos/libAppAuth-iOS.a"; sourceTree = "<group>"; };
+		34893FCE20351ED100530CAF /* AppAuth_logo_circle_256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppAuth_logo_circle_256.png; sourceTree = "<group>"; };
 		34CB09BA1C42007600A54261 /* AppAuthExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuthExampleViewController.h; sourceTree = "<group>"; };
 		34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAuthExampleViewController.m; sourceTree = "<group>"; };
 		34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppAuthExampleViewController.xib; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				346E916B1C29D42800D3620B /* Source */,
+				34893FCD20351ED100530CAF /* Resources */,
 				341310A81E6DEF7000D5DEE5 /* Tests */,
 				341564001C487ABA00ECA3D9 /* Frameworks */,
 				346E916A1C29D42800D3620B /* Products */,
@@ -126,6 +129,14 @@
 				346E917D1C29D42800D3620B /* Info.plist */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		34893FCD20351ED100530CAF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				34893FCE20351ED100530CAF /* AppAuth_logo_circle_256.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		6DB0B0125441549B9E4A3E6C /* Pods */ = {
@@ -196,6 +207,7 @@
 					};
 					346E91681C29D42800D3620B = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 85V5NDP287;
 					};
 				};
 			};
@@ -231,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				346E917C1C29D42800D3620B /* LaunchScreen.storyboard in Resources */,
+				34893FCF20351ED100530CAF /* AppAuth_logo_circle_256.png in Resources */,
 				346E91791C29D42800D3620B /* Assets.xcassets in Resources */,
 				34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */,
 			);
@@ -275,13 +288,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Example-iOS_ObjC-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -456,10 +472,11 @@
 			baseConfigurationReference = 0D29B2A58C931A5D41332144 /* Pods-Example-iOS_ObjC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 85V5NDP287;
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.williamdenniss.appauth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -469,10 +486,11 @@
 			baseConfigurationReference = ECBCCC4A1A779C83C72044F2 /* Pods-Example-iOS_ObjC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 85V5NDP287;
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.williamdenniss.appauth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

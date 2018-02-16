@@ -28,20 +28,20 @@ typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://issuer.example.com";
+static NSString *const kIssuer = @"https://accounts.google.com";
 
 /*! @brief The OAuth client ID.
     @discussion For client configuration instructions, see the README.
         Set to nil to use dynamic registration with this example.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kClientID = @"YOUR_CLIENT_ID";
+static NSString *const kClientID = @"392282445910-tepulg5joaks7rgpmlhc4srqrl6uj2j9.apps.googleusercontent.com";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
+static NSString *const kRedirectURI = @"com.googleusercontent.apps.392282445910-tepulg5joaks7rgpmlhc4srqrl6uj2j9:/oauth2redirect/example-provider";
 
 /*! @brief NSCoding key for the authState property.
  */
@@ -204,7 +204,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:clientID
                                                 clientSecret:clientSecret
-                                                      scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
+                                                      scopes:@[ OIDScopeOpenID, OIDScopeProfile, @"https://www.googleapis.com/auth/calendar" ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil];
@@ -212,10 +212,17 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
 
+  OIDAuthorizationUICoordinatorCustomBrowser *coordinator =
+  [OIDAuthorizationUICoordinatorCustomBrowser CustomBrowserChrome];
+  
+  NSLog(@"%@", coordinator.URLTransformation);
+  NSLog(@"%@", coordinator.canOpenURLScheme);
+  NSLog(@"%@", coordinator.appStoreURL);
+
   appDelegate.currentAuthorizationFlow =
-      [OIDAuthState authStateByPresentingAuthorizationRequest:request
-          presentingViewController:self
-                          callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+   [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                                           UICoordinator:coordinator
+                                                callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
             if (authState) {
               [self setAuthState:authState];
               [self logMessage:@"Got authorization tokens. Access token: %@",
@@ -244,10 +251,10 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request %@", request];
-  appDelegate.currentAuthorizationFlow =
-      [OIDAuthorizationService presentAuthorizationRequest:request
-          presentingViewController:self
-                          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+  
+  OIDAuthorizationUICoordinatorCustomBrowser *coordinator =
+      [OIDAuthorizationUICoordinatorCustomBrowser CustomBrowserSafari];
+  appDelegate.currentAuthorizationFlow = [OIDAuthorizationService presentAuthorizationRequest:request UICoordinator:coordinator callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                      NSError *_Nullable error) {
         if (authorizationResponse) {
           OIDAuthState *authState =

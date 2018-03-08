@@ -41,6 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
+/*! @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance
+        if required.
+ */
++ (id<OIDSafariViewControllerFactory>)safariViewControllerFactory;
+
 /*! @brief Allows library consumers to change the @c OIDSafariViewControllerFactory used to create
         new instances of @c SFSafariViewController.
     @remarks Useful for customizing tint colors and presentation styles.

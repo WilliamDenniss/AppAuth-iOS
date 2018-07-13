@@ -212,16 +212,11 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
 
-  OIDAuthorizationUICoordinatorCustomBrowser *coordinator =
-  [OIDAuthorizationUICoordinatorCustomBrowser CustomBrowserChrome];
-  
-  NSLog(@"%@", coordinator.URLTransformation);
-  NSLog(@"%@", coordinator.canOpenURLScheme);
-  NSLog(@"%@", coordinator.appStoreURL);
+
 
   appDelegate.currentAuthorizationFlow =
    [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                                           UICoordinator:coordinator
+                                           presentingViewController:self
                                                 callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
             if (authState) {
               [self setAuthState:authState];
@@ -252,9 +247,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request %@", request];
   
-  OIDAuthorizationUICoordinatorCustomBrowser *coordinator =
-      [OIDAuthorizationUICoordinatorCustomBrowser CustomBrowserSafari];
-  appDelegate.currentAuthorizationFlow = [OIDAuthorizationService presentAuthorizationRequest:request UICoordinator:coordinator callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+  appDelegate.currentAuthorizationFlow = [OIDAuthorizationService presentAuthorizationRequest:request presentingViewController:self callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                      NSError *_Nullable error) {
         if (authorizationResponse) {
           OIDAuthState *authState =

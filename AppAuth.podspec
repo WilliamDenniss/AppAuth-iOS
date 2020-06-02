@@ -57,4 +57,10 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
     externalUserAgent.osx.deployment_target = '10.9'    
   end
+
+  # Subspec for the full AppAuth library, including platform-dependant external user agents.
+  s.subspec 'TV' do |tv|
+    tv.source_files = "Source/TV/*.{h,m}"
+  end
+
 end
